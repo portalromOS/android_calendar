@@ -1,4 +1,4 @@
-package com.portal.calendar;
+package com.portal.calendar.MonthDay;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,14 +8,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.portal.calendar.Utils.CalendarUtils;
+import com.portal.calendar.R;
+
 import java.util.ArrayList;
 
-class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
+public class MonthDayAdapter extends RecyclerView.Adapter<MonthDayViewHolder> {
     private Context context;
     private final ArrayList<Integer> daysOfMonth;
     private final OnItemListener onItemListener;
 
-    public CalendarAdapter(ArrayList<Integer> daysOfMonth, OnItemListener onItemListener, Context context){
+    public MonthDayAdapter(ArrayList<Integer> daysOfMonth, OnItemListener onItemListener, Context context){
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
         this.context = context;
@@ -23,16 +26,16 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
     @NonNull
     @Override
-    public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MonthDayViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.calendar_cell, parent, false);
+        View view = inflater.inflate(R.layout.month_day_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight()*0.166666666);
-        return new CalendarViewHolder(view, onItemListener);
+        return new MonthDayViewHolder(view, onItemListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MonthDayViewHolder holder, int position) {
         holder.dayOfMonth_txt.setTextColor(context.getResources().getColor(R.color.text, null));
 
         if(CalendarUtils.selectedDate.getMonth() == CalendarUtils.today.getMonth() &&

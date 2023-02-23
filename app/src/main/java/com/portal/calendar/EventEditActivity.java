@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.portal.calendar.Events.CalendarEvent;
+import com.portal.calendar.Events.CalendarEventSQL;
+import com.portal.calendar.Utils.CalendarUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -75,8 +75,12 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     }
 
     public void saveEventAction(View view) {
-        CalendarEvent.addEvent(new CalendarEvent(myEventName, myDate, myTime));
-        finish();
+        //CalendarEventModel.addEvent(new CalendarEventModel(myEventName, myDate, myTime));
+
+        CalendarEventSQL sqlHelper = new CalendarEventSQL(this);
+        if(sqlHelper.add(myEventName, myDate, myTime)){
+            finish();
+        }
     }
 
     public void popUpDatePickerAction(View view) {

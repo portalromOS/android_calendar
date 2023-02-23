@@ -1,34 +1,31 @@
 package com.portal.calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.portal.calendar.Events.CalendarEvent;
-import com.portal.calendar.Events.CalendarEventsAdapter;
+import com.portal.calendar.Events.CalendarEventAdapter;
+import com.portal.calendar.Events.CalendarEventModel;
+import com.portal.calendar.Events.CalendarEventSQL;
+import com.portal.calendar.Utils.CalendarUtils;
+import com.portal.calendar.Utils.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
-public class DayViewActivity extends AppCompatActivity {
-
-    private ListView calendarEventListView;
+public class DayViewActivity extends AppCompatActivity implements RecyclerViewInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_view);
 
-        calendarEventListView = findViewById(R.id.calendarEventListView);
-
         updateUI();
-        setEventAdapter();
+        //setEventAdapter();
     }
     @Override
     protected void onResume() {
@@ -37,14 +34,20 @@ public class DayViewActivity extends AppCompatActivity {
     }
 
     private void setEventAdapter() {
-        ArrayList<CalendarEvent> dailyEvents = CalendarEvent.eventsForDate(CalendarUtils.selectedDate);
-        CalendarEventsAdapter ceAdapter = new CalendarEventsAdapter(getApplicationContext(), dailyEvents);
-        calendarEventListView.setAdapter(ceAdapter);
+        //ArrayList<CalendarEventModel> dailyEvents = CalendarEventModel.eventsForDate(CalendarUtils.selectedDate);
+        CalendarEventSQL helper = new CalendarEventSQL(this);
+        ArrayList<CalendarEventModel> dailyEvents = helper.getByDay(CalendarUtils.selectedDate);
+
+        RecyclerView calendarEventsList = findViewById(R.id.calendarEventList);
+        CalendarEventAdapter ceAdapter = new CalendarEventAdapter(getApplicationContext(), dailyEvents, this);
+        calendarEventsList.setAdapter(ceAdapter);
+        calendarEventsList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void updateUI() {
         setMonthViewTxt();
         setDayTxt();
+        setEventAdapter();
     }
     private void setDayTxt() {
         TextView day_txt = (TextView)findViewById(R.id.day);
@@ -73,5 +76,10 @@ public class DayViewActivity extends AppCompatActivity {
 
     public void addEventAction(View view) {
         startActivity(new Intent(this, EventEditActivity.class));
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

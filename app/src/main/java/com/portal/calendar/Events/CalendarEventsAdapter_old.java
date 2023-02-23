@@ -10,15 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.portal.calendar.CalendarUtils;
+import com.portal.calendar.Utils.CalendarUtils;
 import com.portal.calendar.R;
 
 import java.util.List;
 
-public class CalendarEventsAdapter extends ArrayAdapter<CalendarEvent> {
+public class CalendarEventsAdapter_old extends  ArrayAdapter<CalendarEventModel> {
 
 
-    public CalendarEventsAdapter(@NonNull Context context, List<CalendarEvent> events) {
+    public CalendarEventsAdapter_old(@NonNull Context context, List<CalendarEventModel> events) {
         super(context, 0, events);
     }
 
@@ -26,7 +26,7 @@ public class CalendarEventsAdapter extends ArrayAdapter<CalendarEvent> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        CalendarEvent event = getItem(position);
+        CalendarEventModel event = getItem(position);
 
         if(convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.calendar_event_cell, parent, false);

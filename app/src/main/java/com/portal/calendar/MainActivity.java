@@ -1,7 +1,6 @@
 package com.portal.calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,13 +9,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
+import com.portal.calendar.MonthDay.MonthDayAdapter;
+import com.portal.calendar.Utils.CalendarUtils;
+
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
+public class MainActivity extends AppCompatActivity implements MonthDayAdapter.OnItemListener{
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
 
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         monthYearText.setText(CalendarUtils.monthYearFromDate(getResources(), CalendarUtils.selectedDate));
         ArrayList<Integer> daysInMonth = CalendarUtils.daysInMonthArray(CalendarUtils.selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this, this);
+        MonthDayAdapter calendarAdapter = new MonthDayAdapter(daysInMonth, this, this);
 
         //definir o layout a ser aplicado na recicledView
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);

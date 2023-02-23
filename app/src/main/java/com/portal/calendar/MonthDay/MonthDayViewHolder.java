@@ -1,4 +1,4 @@
-package com.portal.calendar;
+package com.portal.calendar.MonthDay;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,12 +6,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CalendarViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
+import com.portal.calendar.R;
+
+public class MonthDayViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
     public final TextView dayOfMonth_txt;
-    private final CalendarAdapter.OnItemListener onItemListener;
+    private final MonthDayAdapter.OnItemListener onItemListener;
 
     private int day;
-    public CalendarViewHolder(@NonNull View itemView, CalendarAdapter.OnItemListener onItemListener) {
+    public MonthDayViewHolder(@NonNull View itemView, MonthDayAdapter.OnItemListener onItemListener) {
         super(itemView);
         dayOfMonth_txt = itemView.findViewById(R.id.cellEventTextView);
 

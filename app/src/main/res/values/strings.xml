@@ -12,6 +12,8 @@
     <string name="event_form_date">Date</string>
     <string name="event_form_time">Time</string>
 
+    <string name="sql_calendarEvents_add">There was an error adding the event</string>
+
     <string-array name="months">
         <item>January</item>
         <item>February</item>

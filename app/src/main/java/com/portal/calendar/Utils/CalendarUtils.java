@@ -1,8 +1,11 @@
-package com.portal.calendar;
+package com.portal.calendar.Utils;
 
 import android.content.res.Resources;
 
+import com.portal.calendar.R;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +13,8 @@ import java.util.ArrayList;
 
 public class CalendarUtils {
 
+    public static final String DB_NAME = "Calendar.db";
+    public static DateTimeFormatter sqlDateTimeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     //-1 - Monday 6 - Sunday
     public static int myFirstDayOfWeek = 0;
     public static LocalDate selectedDate;
@@ -73,12 +78,36 @@ public class CalendarUtils {
     }
 
     public static String formDate(LocalDate date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMMM dd");
         return date.format(formatter);
     }
 
     public static String formTime(LocalTime time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return time.format(formatter);
+    }
+
+    public static String toSQLite(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(formatter);
+    }
+    public static String toSQLite(LocalTime time){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+        return time.format(formatter);
+    }
+    public static String toSQLite(LocalDate date, LocalTime time){
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+        return dateTime.format(sqlDateTimeformatter);
+    }
+    public static String toSQLite(LocalDateTime datetime){
+        return datetime.format(sqlDateTimeformatter);
+    }
+
+    public static LocalDate getSQLiteDate(String date){
+        return LocalDate.parse(date, sqlDateTimeformatter);
+    }
+
+    public static LocalTime getSQLiteTime(String time){
+        return LocalTime.parse(time, sqlDateTimeformatter);
     }
 }
