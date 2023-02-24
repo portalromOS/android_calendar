@@ -8,12 +8,13 @@
         <item name="android:colorPrimary">@color/highLight</item>
         <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialog</item>
         <item name="android:timePickerDialogTheme">@style/CustomTimePickerDialog</item>
+        <item name="android:spinnerStyle">@style/FormInput</item>
         <!--Customize your theme here. -->
     </style>
 
 
     <style name="ButtonStyle">
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/ff_monserrat_bold</item>
         <item name="android:textSize">20sp</item>
         <item name="cornerSize">16dp</item>
         <item name="android:textAllCaps">false</item>
@@ -27,18 +28,44 @@
         <item name="cornerSize">16dp</item>
     </style>
 
+    <style name="MainHeaderTitle">
+        <item name="android:fontFamily">@font/ff_monserrat_bold</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MainHeaderSubtitle">
+        <item name="android:fontFamily">@font/ff_montserrat_regular</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="TableHeader">
+        <item name="android:fontFamily">@font/ff_monserrat_bold</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="FormInput">
+        <item name="android:fontFamily">@font/ff_monserrat_medium</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="FormInputSpinner"  parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:fontFamily">@font/ff_monserrat_medium</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@color/bg</item>
+    </style>
     <style name="FormInputPicker" parent="FormInput">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
@@ -47,7 +74,7 @@
     </style>
 
     <style name="FormInlineLabel">
-
+        <item name="android:fontFamily">@font/ff_monserrat_light</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>

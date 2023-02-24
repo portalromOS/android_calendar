@@ -45,10 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="January 2022"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:textColor="@color/text"
-                android:textSize="20sp"
+                android:theme="@style/MainHeaderTitle"
                 app:layout_constraintEnd_toStartOf="@+id/add"
                 app:layout_constraintStart_toEndOf="@id/close"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -95,9 +92,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Monday 20"
-                android:textAlignment="center"
-                android:textColor="@color/text"
-                android:textSize="17sp"
+                android:theme="@style/MainHeaderSubtitle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/mainHeader_dayAction_next"
                 app:layout_constraintStart_toEndOf="@+id/mainHeader_dayAction_prev" />

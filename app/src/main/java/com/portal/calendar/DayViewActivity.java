@@ -18,7 +18,7 @@ import com.portal.calendar.Utils.RecyclerViewInterface;
 import java.util.ArrayList;
 
 public class DayViewActivity extends AppCompatActivity implements RecyclerViewInterface {
-
+    private  ArrayList<CalendarEventModel> dailyEvents;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +36,7 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
     private void setEventAdapter() {
         //ArrayList<CalendarEventModel> dailyEvents = CalendarEventModel.eventsForDate(CalendarUtils.selectedDate);
         CalendarEventSQL helper = new CalendarEventSQL(this);
-        ArrayList<CalendarEventModel> dailyEvents = helper.getByDay(CalendarUtils.selectedDate);
+        dailyEvents = helper.getByDay(CalendarUtils.selectedDate);
 
         RecyclerView calendarEventsList = findViewById(R.id.calendarEventList);
         CalendarEventAdapter ceAdapter = new CalendarEventAdapter(getApplicationContext(), dailyEvents, this);
@@ -80,6 +80,10 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(this, EventEditActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("calendarEvent", dailyEvents.get(position));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

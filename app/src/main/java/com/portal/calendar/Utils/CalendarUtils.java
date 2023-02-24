@@ -1,6 +1,8 @@
 package com.portal.calendar.Utils;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.widget.Toast;
 
 import com.portal.calendar.R;
 
@@ -29,6 +31,14 @@ public class CalendarUtils {
             initiated = true;
         }
     }
+
+    public static String getStringResourceByName(Context context, String idString) {
+        Resources r = context.getResources();
+        int resId = r.getIdentifier(idString, "string", context.getPackageName());
+        String val = r.getString(resId);
+        return val;
+    }
+
     public static ArrayList<Integer> daysInMonthArray(LocalDate date) {
         ArrayList<Integer> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
@@ -76,7 +86,7 @@ public class CalendarUtils {
         result = months[monthId-1]+" "+date.getYear();
         return result;
     }
-
+    //region datetime formating
     public static String formDate(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMMM dd");
         return date.format(formatter);
@@ -86,7 +96,8 @@ public class CalendarUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return time.format(formatter);
     }
-
+    //endregion
+    //region SQLite
     public static String toSQLite(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return date.format(formatter);
@@ -109,5 +120,12 @@ public class CalendarUtils {
 
     public static LocalTime getSQLiteTime(String time){
         return LocalTime.parse(time, sqlDateTimeformatter);
+    }
+
+    //endregion
+
+    public static void showMsg(Context context, int msgId) {
+        String message = context.getResources().getString(msgId) ;
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }
