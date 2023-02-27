@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements MonthDayAdapter.O
         //definir o layout a ser aplicado na recicledView
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
 
-
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }

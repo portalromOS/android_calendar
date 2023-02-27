@@ -44,6 +44,7 @@ public class CalendarEventAdapter extends  RecyclerView.Adapter<CalendarEventAda
 
         holder.tvTime.setText(CalendarUtils.formTime(model.time));
         holder.tvName.setText(model.name);
+        holder.tvDetail.setText(model.detail);
     }
 
     @Override
@@ -55,13 +56,14 @@ public class CalendarEventAdapter extends  RecyclerView.Adapter<CalendarEventAda
 
         TextView tvTime;
         TextView tvName;
-
+        TextView tvDetail;
 
         public DayEventViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             tvTime = itemView.findViewById(R.id.dayEventTime);
             tvName = itemView.findViewById(R.id.dayEventName);
+            tvDetail = itemView.findViewById(R.id.dayEventDetail);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

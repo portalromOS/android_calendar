@@ -55,23 +55,6 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean add(String name, LocalDate date, LocalTime time, int alarm, String detail){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COL_NAME, name);
-        cv.put(COL_DATE_TIME, CalendarUtils.toSQLite(date, time));
-        cv.put(COL_ALARM, alarm);
-        cv.put(COL_DETAIL, detail);
-        long result = db.insert(TABLE_NAME, null, cv);
-
-        if(result == -1){
-            CalendarUtils.showMsg(context, R.string.sql_calendarEvents_add);
-            return false;
-        }
-        return true;
-    }
-
     public boolean addOrUpdate(CalendarEventModel model){
         long result = -1;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -135,5 +118,24 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         return result;
     }
 
+    public boolean hasEventByDay(LocalDate date){
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        if(db != null){
+            String q = "SELECT COUNT(" + COL_ID  + ") " +
+                    " FROM " + TABLE_NAME  +
+                    " WHERE " +" date(" + COL_DATE_TIME  + ") = '" + CalendarUtils.toSQLite(date) +"'";
 
+            Cursor cursor = null;
+
+            cursor = db.rawQuery(q, null);
+            cursor.moveToFirst();
+            int count= cursor.getInt(0);
+            cursor.close();
+
+            result = (count>0);
+
+        }
+        return result;
+    }
 }

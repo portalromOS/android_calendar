@@ -42,14 +42,32 @@
             <TextView
                 android:id="@+id/dayEventName"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="TextView"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Titulo"
+                android:textSize="14sp"
+                android:fontFamily="@font/ff_monserrat_bold"
                 android:textColor="@color/text"
-                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/dayEventTime"
+                app:layout_constraintTop_toTopOf="parent"
+ />
+
+            <TextView
+                android:id="@+id/dayEventDetail"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                android:textSize="14sp"
+                android:text="Detalhes"
+                android:textColor="@color/text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dayEventTime"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/dayEventName"
+
+
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

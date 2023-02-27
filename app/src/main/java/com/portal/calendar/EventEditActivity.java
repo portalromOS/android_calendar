@@ -22,10 +22,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.portal.calendar.Alarm.AlarmItem;
+import com.portal.calendar.Alarm.AlarmScheduler;
 import com.portal.calendar.Events.CalendarEventModel;
 import com.portal.calendar.Events.CalendarEventSQL;
 import com.portal.calendar.Utils.CalendarUtils;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -153,6 +156,18 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
             CalendarEventSQL sqlHelper = new CalendarEventSQL(this);
 
             if(sqlHelper.addOrUpdate(model)){
+
+                if(model.alarm >= 0){
+                    LocalDateTime dateTime = LocalDateTime.of(model.date, model.time);
+                    dateTime.minusHours(model.alarm);
+
+                    AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail);
+
+
+                    AlarmScheduler as = new AlarmScheduler(this);
+                    as.schedule(ai, dateTime);
+                }
+
                 finish();
             }
         }
@@ -165,6 +180,11 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
         CalendarEventSQL sqlHelper = new CalendarEventSQL(this);
 
         if(sqlHelper.delete(model)){
+
+            AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail);
+            AlarmScheduler as = new AlarmScheduler(this);
+            as.cancel(ai);
+
             finish();
         }
     }

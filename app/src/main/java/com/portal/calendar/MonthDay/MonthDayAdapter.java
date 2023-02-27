@@ -44,8 +44,8 @@ public class MonthDayAdapter extends RecyclerView.Adapter<MonthDayViewHolder> {
                 holder.dayOfMonth_txt.setTextColor(context.getResources().getColor(R.color.highLight, null));
             }
         }
-        holder.setDayOfMonth(daysOfMonth.get(position));
 
+        holder.setDayOfMonth(context, daysOfMonth.get(position));
     }
 
     @Override
