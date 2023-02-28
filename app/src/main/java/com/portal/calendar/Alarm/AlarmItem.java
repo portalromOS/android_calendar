@@ -1,8 +1,9 @@
 package com.portal.calendar.Alarm;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class AlarmItem {
+public class AlarmItem implements Serializable {
     int eventId;
     String title;
     String detail;

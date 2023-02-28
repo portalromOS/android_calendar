@@ -1,9 +1,13 @@
 package com.portal.calendar.Alarm;
 
+import static com.portal.calendar.Alarm.AlarmReceiver.ALARM_ITEM_NOTIFICATION;
+
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,12 +21,15 @@ public class AlarmScheduler implements  AlarmSchedulerInterface{
         manager = context.getSystemService(AlarmManager.class);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void schedule(AlarmItem item, LocalDateTime dateTime) {
         Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra("EVENT_TITLE", item.title);
-        intent.putExtra("EVENT_DETAIL", item.detail);
-        intent.putExtra("EVENT_ID", item.eventId);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ALARM_ITEM_NOTIFICATION, item);
+        intent.putExtras(bundle);
+
         manager.setExactAndAllowWhileIdle(
             manager.RTC_WAKEUP,
             dateTime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,

@@ -1,5 +1,7 @@
 package com.portal.calendar;
 
+import static com.portal.calendar.EventEditActivity.CALENDAR_EVENT_BUNDLE_NAME;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,7 +84,7 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
     public void onItemClick(int position) {
         Intent intent = new Intent(this, EventEditActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("calendarEvent", dailyEvents.get(position));
+        bundle.putSerializable(CALENDAR_EVENT_BUNDLE_NAME, dailyEvents.get(position));
         intent.putExtras(bundle);
         startActivity(intent);
     }

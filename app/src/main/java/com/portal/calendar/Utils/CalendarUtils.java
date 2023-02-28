@@ -126,6 +126,9 @@ public class CalendarUtils {
 
     public static void showMsg(Context context, int msgId) {
         String message = context.getResources().getString(msgId) ;
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        showMsg(context, message);
+    }
+    public static void showMsg(Context context, String  msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }

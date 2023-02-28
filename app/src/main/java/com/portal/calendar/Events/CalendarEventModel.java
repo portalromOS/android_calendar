@@ -4,6 +4,7 @@ import com.portal.calendar.Utils.CalendarUtils;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class CalendarEventModel implements Serializable {
@@ -63,4 +64,12 @@ public class CalendarEventModel implements Serializable {
         return result;
     }
 
+    public LocalDateTime getAlarmDateTime() {
+        if(alarm<0)
+            return null;
+
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+        dateTime.minusHours(alarm);
+        return dateTime;
+    }
 }

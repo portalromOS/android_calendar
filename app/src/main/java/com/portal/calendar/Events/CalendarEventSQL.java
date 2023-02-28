@@ -55,7 +55,8 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addOrUpdate(CalendarEventModel model){
+    //Retorna o id do modelo inserido ou atualizado
+    public long addOrUpdate(CalendarEventModel model){
         long result = -1;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -69,18 +70,19 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
             result = db.update(TABLE_NAME, cv, COL_ID+"=?", new String[]{model.id+""});
             if(result == -1){
                 CalendarUtils.showMsg(context, R.string.sql_calendarEvents_update);
-                return false;
+            }
+            else{
+                result = model.id;
             }
         }
         else{
-            result = db.insert(TABLE_NAME, null, cv);
+            result = db.insert(TABLE_NAME, null, cv);//return insertedId
             if(result == -1){
                 CalendarUtils.showMsg(context, R.string.sql_calendarEvents_add);
-                return false;
             }
         }
 
-        return true;
+        return result;
     }
 
     public boolean delete(CalendarEventModel model) {
@@ -118,6 +120,22 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         return result;
     }
 
+    public CalendarEventModel getById(int eventId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        CalendarEventModel result = null;
+        if(db != null){
+            String q = "SELECT " + COL_ID  + ", " + COL_NAME  + ", " + COL_DATE_TIME  + ", " + COL_ALARM  + ", " + COL_DETAIL  +
+                    " FROM " + TABLE_NAME  +
+                    " WHERE " + COL_ID +" = " +  eventId;
+
+            Cursor cursor = null;
+            cursor = db.rawQuery(q, null);
+            cursor.moveToFirst();
+            result = new CalendarEventModel(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4));
+        }
+        return result;
+    }
+
     public boolean hasEventByDay(LocalDate date){
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
@@ -135,6 +153,28 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
 
             result = (count>0);
 
+        }
+        return result;
+    }
+
+    public ArrayList<CalendarEventModel> getFutureAlarms(){
+        ArrayList<CalendarEventModel> result = new ArrayList<CalendarEventModel>() ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        LocalDate now = LocalDate.now();
+
+        if(db != null){
+            String q = "SELECT " + COL_ID  + ", " + COL_NAME  + ", " + COL_DATE_TIME  + ", " + COL_ALARM  + ", " + COL_DETAIL  +
+                    " FROM " + TABLE_NAME  +
+                    " WHERE " +" date(" + COL_DATE_TIME  + ") >= '" + CalendarUtils.toSQLite(now) +"' AND "+ COL_ALARM + " >= 0"
+                    ;
+
+            Cursor cursor = null;
+
+            cursor = db.rawQuery(q, null);
+
+            while(cursor.moveToNext()){
+                result.add(new CalendarEventModel(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4)));
+            }
         }
         return result;
     }

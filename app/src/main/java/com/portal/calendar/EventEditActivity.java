@@ -35,6 +35,7 @@ import java.util.ArrayList;
 public class EventEditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, AdapterView.OnItemSelectedListener
 {
+    public static String CALENDAR_EVENT_BUNDLE_NAME = "CALENDAR_EVENT_BUNDLE_NAME";
     private int[] alarmValues = new int[]{-1, 0, 1, 8, 24};
     private EditText eventName;
     private TextView eventDate;
@@ -92,9 +93,9 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
         Bundle b = getIntent().getExtras();
         if(b != null){
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                model =  b.getSerializable("calendarEvent",CalendarEventModel.class) ;
+                model =  b.getSerializable(CALENDAR_EVENT_BUNDLE_NAME,CalendarEventModel.class) ;
             }else{
-                model =  (CalendarEventModel) b.getSerializable("calendarEvent") ;
+                model =  (CalendarEventModel) b.getSerializable(CALENDAR_EVENT_BUNDLE_NAME) ;
             }
         }
         if(model == null){
@@ -154,26 +155,21 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     public void saveEventAction(View view) {
         if(model.isValid()){
             CalendarEventSQL sqlHelper = new CalendarEventSQL(this);
-
-            if(sqlHelper.addOrUpdate(model)){
-
+            long result = sqlHelper.addOrUpdate(model);
+            if(result>0){
+                model.id = result;
                 if(model.alarm >= 0){
-                    LocalDateTime dateTime = LocalDateTime.of(model.date, model.time);
-                    dateTime.minusHours(model.alarm);
-
                     AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail);
-
-
                     AlarmScheduler as = new AlarmScheduler(this);
-                    as.schedule(ai, dateTime);
-                }
+                    as.schedule(ai, model.getAlarmDateTime());
 
+                    CalendarUtils.showMsg(this, R.string.event_form_alarmAdded);
+                }
                 finish();
             }
         }
         else{
-            String message = getResources().getString(R.string.event_form_invalidFields) ;
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            CalendarUtils.showMsg(this, R.string.event_form_invalidFields);
         }
     }
     public void deleteEventAction(View view) {
