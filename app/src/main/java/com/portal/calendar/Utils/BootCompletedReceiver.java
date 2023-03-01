@@ -29,7 +29,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             for (CalendarEventModel model : futureAlarms) {
 
 
-                AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail);
+                AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail, model.alarmSoundName);
                 as.schedule(ai, model.getAlarmDateTime());
                 Log.i("Calendar Alarm", "New Alarm "+ model.id +" "+ model.name +" "+ model.detail);
             }

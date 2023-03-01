@@ -35,7 +35,9 @@ import java.util.ArrayList;
 public class EventEditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, AdapterView.OnItemSelectedListener
 {
-    public static String CALENDAR_EVENT_BUNDLE_NAME = "CALENDAR_EVENT_BUNDLE_NAME";
+    //public static String CALENDAR_EVENT_BUNDLE_NAME = "CALENDAR_EVENT_BUNDLE_NAME";
+    public static String CALENDAR_EVENT_BUNDLE_EVENT_ID="CALENDAR_EVENT_BUNDLE_EVENT_ID";
+
     private int[] alarmValues = new int[]{-1, 0, 1, 8, 24};
     private EditText eventName;
     private TextView eventDate;
@@ -43,7 +45,8 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     private Spinner eventAlarm;
     private TextView eventDetail;
 
-    CalendarEventModel model;
+    private CalendarEventSQL sqlHelper;
+    CalendarEventModel model = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +91,13 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
+        sqlHelper = new CalendarEventSQL(this);
 
-        model = null;
+        long eventId = getIntent().getLongExtra(CALENDAR_EVENT_BUNDLE_EVENT_ID, -1);
+        if(eventId >= 0)
+            model = sqlHelper.getById((int)eventId);
+
+        /*
         Bundle b = getIntent().getExtras();
         if(b != null){
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
@@ -98,6 +106,8 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
                 model =  (CalendarEventModel) b.getSerializable(CALENDAR_EVENT_BUNDLE_NAME) ;
             }
         }
+        */
+
         if(model == null){
             model = new CalendarEventModel();
             deleteIconBtn.setVisibility(View.GONE);
@@ -154,12 +164,11 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
 
     public void saveEventAction(View view) {
         if(model.isValid()){
-            CalendarEventSQL sqlHelper = new CalendarEventSQL(this);
             long result = sqlHelper.addOrUpdate(model);
             if(result>0){
                 model.id = result;
                 if(model.alarm >= 0){
-                    AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail);
+                    AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail, model.alarmSoundName);
                     AlarmScheduler as = new AlarmScheduler(this);
                     as.schedule(ai, model.getAlarmDateTime());
 
@@ -173,11 +182,9 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
         }
     }
     public void deleteEventAction(View view) {
-        CalendarEventSQL sqlHelper = new CalendarEventSQL(this);
-
         if(sqlHelper.delete(model)){
 
-            AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail);
+            AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail, model.alarmSoundName);
             AlarmScheduler as = new AlarmScheduler(this);
             as.cancel(ai);
 

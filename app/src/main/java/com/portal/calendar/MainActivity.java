@@ -12,10 +12,11 @@ import android.widget.TextView;
 
 import com.portal.calendar.MonthDay.MonthDayAdapter;
 import com.portal.calendar.Utils.CalendarUtils;
+import com.portal.calendar.Utils.OnSwipeTouchListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements MonthDayAdapter.OnItemListener{
+public class MainActivity extends AppCompatActivity implements MonthDayAdapter.OnItemListener {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
 
@@ -26,13 +27,26 @@ public class MainActivity extends AppCompatActivity implements MonthDayAdapter.O
         setContentView(R.layout.activity_main);
         CalendarUtils.init();
 
-        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYear);
+        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
+        calendarRecyclerView.setOnTouchListener(setupViewSwipeListener());
 
         updateUI();
 
     }
+    private OnSwipeTouchListener setupViewSwipeListener(){
+        return new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                nextMonthAction(calendarRecyclerView);
+            }
 
+            @Override
+            public void onSwipeRight() {
+                prevMonthAction(calendarRecyclerView);
+            }
+        };
+    }
     private void updateUI(){
         setMonthViewTxt();
         setWeekDays();
@@ -89,4 +103,5 @@ public class MainActivity extends AppCompatActivity implements MonthDayAdapter.O
             startActivity(new Intent(this, DayViewActivity.class));
         }
     }
+
 }

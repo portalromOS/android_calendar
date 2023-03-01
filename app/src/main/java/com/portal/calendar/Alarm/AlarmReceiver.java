@@ -1,7 +1,7 @@
 package com.portal.calendar.Alarm;
 
 
-import static com.portal.calendar.EventEditActivity.CALENDAR_EVENT_BUNDLE_NAME;
+import static com.portal.calendar.EventEditActivity.CALENDAR_EVENT_BUNDLE_EVENT_ID;
 
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -35,7 +35,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 getEventViewIntent(alarmItem.eventId),
                 alarmItem.title,
                 alarmItem.detail,
-                R.drawable.ic_launcher_foreground
+                R.drawable.ic_launcher,
+                alarmItem.alarmSoundName
             );
 
             notificationHelper.getManager().notify(alarmItem.eventId, builder.build());
@@ -45,19 +46,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     private PendingIntent getEventViewIntent(int eventId){
         PendingIntent result = null;
 
-        CalendarEventSQL helper = new CalendarEventSQL(context);
-        CalendarEventModel event = helper.getById(eventId);
+        Intent resultIntent = new Intent(context, EventEditActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong(CALENDAR_EVENT_BUNDLE_EVENT_ID, eventId);
+        resultIntent.putExtras(bundle);
 
-        if(event != null){
-            Intent resultIntent = new Intent(context, EventEditActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(CALENDAR_EVENT_BUNDLE_NAME, event);
-            resultIntent.putExtras(bundle);
 
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addNextIntentWithParentStack(resultIntent);
-            result = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        }
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        result = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
         return result;
     }
 

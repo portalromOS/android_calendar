@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -20,8 +21,8 @@ public class NotificationHelper extends ContextWrapper {
 
     private NotificationManager nManager;
 
-    public NotificationHelper(Context base) {
-        super(base);
+    public NotificationHelper(Context context) {
+        super(context);
         createChannels();
 
     }
@@ -50,7 +51,7 @@ public class NotificationHelper extends ContextWrapper {
         return nManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(PendingIntent resultPendingIntent,String title, String detail, int icon){
+    public NotificationCompat.Builder getChannelNotification(PendingIntent resultPendingIntent,String title, String detail, int icon, String soundName){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_DEFAULT_ID);
         builder.setContentTitle(title);
         builder.setContentText(detail);
@@ -58,6 +59,11 @@ public class NotificationHelper extends ContextWrapper {
         builder.setPriority(PRIORITY_HIGH);
         builder.setCategory(CATEGORY_EVENT);
         builder.setAutoCancel(true);
+
+        if(soundName != null){
+            Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/raw/"+soundName);
+            builder.setSound(uri);
+        }
 
         builder.setContentIntent(resultPendingIntent);
         return builder;

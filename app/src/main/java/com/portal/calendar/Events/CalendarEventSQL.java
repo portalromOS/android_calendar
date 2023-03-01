@@ -19,17 +19,19 @@ import java.util.ArrayList;
 public class CalendarEventSQL extends SQLiteOpenHelper {
     private Context context;
 
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 6;
 
     private static final String TABLE_NAME = "event";
 
-    private static final String COL_ID = "id";
-    private static final String COL_NAME = "name";
-    private static final String COL_DATE_TIME = "date_time";
-    private static final String COL_DETAIL = "detail";
-    private static final String COL_ALARM = "alarm";
+    public static final String COL_ID = "id";
+    public static final String COL_NAME = "name";
+    public static final String COL_DETAIL = "detail";
+    public static final String COL_DATE_TIME = "date_time";
 
-
+    public static final String COL_ALARM = "alarm";
+    public static final String COL_ALL_DAY = "allDay";
+    public static final String COL_DATE_TIME_END = "date_time_end";
+    public static final String COL_SOUND_NAME = "soundName";
 
     public CalendarEventSQL(@Nullable Context context) {
         super(context, CalendarUtils.DB_NAME, null, DB_VERSION);
@@ -41,9 +43,12 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         String q = "CREATE TABLE " + TABLE_NAME  + "(" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 COL_NAME + " TEXT, " +
+                COL_DETAIL + " TEXT ," +
                 COL_DATE_TIME + " TEXT, " +
+                COL_DATE_TIME_END + " TEXT, " +
+                COL_ALL_DAY + " INTEGER, " +
                 COL_ALARM + " INTEGER, " +
-                COL_DETAIL + " TEXT " +
+                COL_SOUND_NAME + " TEXT " +
         ");";
 
         db.execSQL(q);
@@ -62,9 +67,12 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         cv.put(COL_NAME, model.name);
-        cv.put(COL_DATE_TIME, CalendarUtils.toSQLite(model.date, model.time));
-        cv.put(COL_ALARM, model.alarm);
         cv.put(COL_DETAIL, model.detail);
+        cv.put(COL_DATE_TIME, CalendarUtils.toSQLite(model.date, model.time));
+        cv.put(COL_DATE_TIME_END, CalendarUtils.toSQLite(model.dateEnd, model.timeEnd));
+        cv.put(COL_ALL_DAY, model.allDay);
+        cv.put(COL_ALARM, model.alarm);
+        cv.put(COL_SOUND_NAME, model.alarmSoundName);
 
         if(model.hasId()){
             result = db.update(TABLE_NAME, cv, COL_ID+"=?", new String[]{model.id+""});
@@ -99,22 +107,21 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<CalendarEventModel> getByDay(LocalDate date){
+    public ArrayList<CalendarEventModel> getByDay_minInfo(LocalDate date){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CalendarEventModel> result = new ArrayList<CalendarEventModel>() ;
         if(db != null){
-            String q = "SELECT " + COL_ID  + ", " + COL_NAME  + ", " + COL_DATE_TIME  + ", " + COL_ALARM  + ", " + COL_DETAIL  +
+            String q = "SELECT " + COL_ID  + ", " + COL_NAME  + ", " + COL_DATE_TIME  + ", " + COL_ALL_DAY + ", " + COL_DETAIL  +
                     " FROM " + TABLE_NAME  +
                     " WHERE " +" date(" + COL_DATE_TIME  + ") = '" + CalendarUtils.toSQLite(date) +"'"+
-                    " ORDER BY time(" + COL_DATE_TIME  + ")";
+                    " ORDER BY " + COL_ALL_DAY + ", time(" + COL_DATE_TIME  + ")";
 
             Cursor cursor = null;
 
             cursor = db.rawQuery(q, null);
 
             while(cursor.moveToNext()){
-
-                result.add(new CalendarEventModel(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4)));
+                result.add(new CalendarEventModel(cursor));
             }
         }
         return result;
@@ -124,14 +131,16 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         CalendarEventModel result = null;
         if(db != null){
-            String q = "SELECT " + COL_ID  + ", " + COL_NAME  + ", " + COL_DATE_TIME  + ", " + COL_ALARM  + ", " + COL_DETAIL  +
+            String q = "SELECT * " +
                     " FROM " + TABLE_NAME  +
                     " WHERE " + COL_ID +" = " +  eventId;
 
             Cursor cursor = null;
             cursor = db.rawQuery(q, null);
-            cursor.moveToFirst();
-            result = new CalendarEventModel(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4));
+            if (cursor.getCount()>0){
+                cursor.moveToFirst();
+                result = new CalendarEventModel(cursor);
+            }
         }
         return result;
     }
@@ -173,7 +182,7 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
             cursor = db.rawQuery(q, null);
 
             while(cursor.moveToNext()){
-                result.add(new CalendarEventModel(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4)));
+                result.add(new CalendarEventModel(cursor));
             }
         }
         return result;

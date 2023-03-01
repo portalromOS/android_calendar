@@ -1,6 +1,7 @@
 package com.portal.calendar;
 
-import static com.portal.calendar.EventEditActivity.CALENDAR_EVENT_BUNDLE_NAME;
+import static com.portal.calendar.EventEditActivity.CALENDAR_EVENT_BUNDLE_EVENT_ID;
+//import static com.portal.calendar.EventEditActivity.CALENDAR_EVENT_BUNDLE_NAME;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,16 +16,21 @@ import com.portal.calendar.Events.CalendarEventAdapter;
 import com.portal.calendar.Events.CalendarEventModel;
 import com.portal.calendar.Events.CalendarEventSQL;
 import com.portal.calendar.Utils.CalendarUtils;
+import com.portal.calendar.Utils.OnSwipeTouchListener;
 import com.portal.calendar.Utils.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
 public class DayViewActivity extends AppCompatActivity implements RecyclerViewInterface {
     private  ArrayList<CalendarEventModel> dailyEvents;
+    private RecyclerView calendarEventListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_view);
+
+        calendarEventListView= findViewById(R.id.calendarEventListView);
+        calendarEventListView.setOnTouchListener(setupListViewSwipeListener());
 
         updateUI();
         //setEventAdapter();
@@ -35,15 +41,28 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
         setEventAdapter();
     }
 
+    private OnSwipeTouchListener setupListViewSwipeListener(){
+        return new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                nextDayAction(calendarEventListView);
+            }
+
+            @Override
+            public void onSwipeRight() {
+                prevDayAction(calendarEventListView);
+            }
+        };
+    }
+
     private void setEventAdapter() {
         //ArrayList<CalendarEventModel> dailyEvents = CalendarEventModel.eventsForDate(CalendarUtils.selectedDate);
         CalendarEventSQL helper = new CalendarEventSQL(this);
-        dailyEvents = helper.getByDay(CalendarUtils.selectedDate);
+        dailyEvents = helper.getByDay_minInfo(CalendarUtils.selectedDate);
 
-        RecyclerView calendarEventsList = findViewById(R.id.calendarEventList);
         CalendarEventAdapter ceAdapter = new CalendarEventAdapter(getApplicationContext(), dailyEvents, this);
-        calendarEventsList.setAdapter(ceAdapter);
-        calendarEventsList.setLayoutManager(new LinearLayoutManager(this));
+        calendarEventListView.setAdapter(ceAdapter);
+        calendarEventListView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void updateUI() {
@@ -82,10 +101,16 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
 
     @Override
     public void onItemClick(int position) {
+        long eventId = dailyEvents.get(position).id;
+
         Intent intent = new Intent(this, EventEditActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(CALENDAR_EVENT_BUNDLE_NAME, dailyEvents.get(position));
+        //bundle.putSerializable(CALENDAR_EVENT_BUNDLE_NAME, dailyEvents.get(position));
+        bundle.putLong(CALENDAR_EVENT_BUNDLE_EVENT_ID, eventId);
         intent.putExtras(bundle);
+
+
+
         startActivity(intent);
     }
 }
