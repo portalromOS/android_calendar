@@ -6,12 +6,15 @@
     <string name="close">X</string>
     <string name="add">+</string>
     <string name="save">Save</string>
+    <string name="none">None</string>
 
     <string name="event_title">Event</string>
     <string name="event_form_name">Name</string>
     <string name="event_form_date">Date</string>
     <string name="event_form_time">Time</string>
     <string name="event_form_alarm">Alarm</string>
+    <string name="event_form_notification">Notification</string>
+    <string name="event_form_sound">Sound</string>
     <string name="event_form_detail">Details</string>
     <string name="event_form_invalidFields">There are invalid fields</string>
     <string name="event_form_alarmAdded">Alarm added</string>
@@ -74,11 +77,8 @@
     <string name="eventAlarms_8">8h Early</string>
     <string name="eventAlarms_24">1 day Early</string>
 
-    <string-array name="eventAlarms">
-        <item>None</item>
-        <item>Exact</item>
-        <item>1h Early</item>
-        <item>8h Early</item>
-        <item>1 day Early</item>
-    </string-array>
+    <string name="alarmSound_">None</string>
+    <string name="alarmSound_alarm_clock_beep">Clock beep</string>
+    <string name="alarmSound_data_scaner">Data scanner</string>
+    <string name="alarmSound_rooster_crowing_in_the_morning">Rooster in the morning</string>
 </resources>

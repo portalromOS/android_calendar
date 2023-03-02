@@ -214,6 +214,56 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/formDivAlarmSound"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="0"
+            >
+
+            <TextView
+                android:id="@+id/eventAlarmSoundLabel"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/event_form_sound"
+
+                android:theme="@style/FormInlineLabel"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/eventAlarmSound"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:spinnerMode="dropdown"
+                android:theme="@style/FormInput"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/playSoundIconBtn"
+                app:layout_constraintStart_toEndOf="@+id/eventAlarmSoundLabel"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/playSoundIconBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="toggleSoundAction"
+                android:background="@android:color/transparent"
+                android:tint="@color/highLight"
+                android:padding="8dp"
+                app:srcCompat="@drawable/baseline_play_circle_outline_24"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivDetail"
             android:layout_width="match_parent"
             android:layout_height="200dp"

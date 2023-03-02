@@ -1,17 +1,21 @@
 package com.portal.calendar.Utils;
 
+import static java.lang.Math.abs;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.widget.Toast;
 
 import com.portal.calendar.R;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarUtils {
 
@@ -130,5 +134,28 @@ public class CalendarUtils {
     }
     public static void showMsg(Context context, String  msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    }
+
+    public static ArrayList<String> getStringResourcesArray(Context context, ArrayList<?> values, String constantPrefix) {
+        ArrayList<String> result = new ArrayList<>();
+        for(int i = 0; i < values.size(); i++){
+            result.add(CalendarUtils.getStringResourceByName(context, constantPrefix + values.get(i)));
+        }
+        return result;
+    }
+
+    public static int getListPositionByValue(ArrayList<String> values, String value) {
+        for(int i = 0; i < values.size(); i++){
+            if(values.get(i).equals(value))
+                return i;
+        }
+        return 0;
+    }
+    public static int getListPositionByValue(ArrayList<?> values, Integer value) {
+        for(int i = 0; i < values.size(); i++){
+            if(values.get(i)==value)
+                return i;
+        }
+        return 0;
     }
 }
