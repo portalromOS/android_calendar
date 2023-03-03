@@ -8,17 +8,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.portal.calendar.Events.CalendarEventModel;
 import com.portal.calendar.Events.CalendarEventSQL;
 import com.portal.calendar.R;
 import com.portal.calendar.Utils.CalendarUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class MonthDayViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
     public final TextView dayOfMonth_txt;
     public final ImageView dayOfMonth_event_notification;
     private final MonthDayAdapter.OnItemListener onItemListener;
 
+    private static  CalendarEventSQL helperSQL;
     private int day;
     public MonthDayViewHolder(@NonNull View itemView, MonthDayAdapter.OnItemListener onItemListener) {
         super(itemView);
@@ -34,16 +37,27 @@ public class MonthDayViewHolder extends RecyclerView.ViewHolder implements  View
         if(day>0) {
             dayOfMonth_txt.setText(day + "");
 
-            CalendarEventSQL helper = new CalendarEventSQL(context);
             LocalDate date = LocalDate.of(CalendarUtils.selectedDate.getYear(), CalendarUtils.selectedDate.getMonth(), day);
 
-            if(helper.hasEventByDay(date)){
+
+            if(getHelperSQL(context).hasEventByDay(date)){
                 dayOfMonth_event_notification.setVisibility(View.VISIBLE);
             }
+
+            //ArrayList<CalendarEventModel> eventsOfTheDay = getHelperSQL(context).getEventsByDayMonthView(date);
+
+
         }
         else {
             dayOfMonth_txt.setText("");
         }
+    }
+
+    private CalendarEventSQL getHelperSQL(Context context){
+        if(helperSQL == null){
+            helperSQL = new CalendarEventSQL(context);
+        }
+        return helperSQL;
     }
 
     @Override

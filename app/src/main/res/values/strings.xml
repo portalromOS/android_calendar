@@ -7,6 +7,7 @@
     <string name="add">+</string>
     <string name="save">Save</string>
     <string name="none">None</string>
+    <string name="updatePermissions">Update Permissions</string>
 
     <string name="event_title">Event</string>
     <string name="event_form_name">Name</string>
@@ -18,6 +19,7 @@
     <string name="event_form_detail">Details</string>
     <string name="event_form_invalidFields">There are invalid fields</string>
     <string name="event_form_alarmAdded">Alarm added</string>
+    <string name="event_form_alarmOutdated">Alarm is outdated</string>
 
     <string name="sql_calendarEvents_add">There was an error adding the event</string>
     <string name="sql_calendarEvents_update">There was an error updating the event</string>

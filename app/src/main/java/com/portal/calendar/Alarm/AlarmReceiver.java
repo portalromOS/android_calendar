@@ -22,6 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private Context context;
     public static String ALARM_ITEM_NOTIFICATION = "AlarmEvent";
 
+    //Recebo o evento do sheduler qd este é disparado no dia e hora destinado
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
@@ -29,7 +30,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         AlarmItem alarmItem = getAlarm(intent);
 
         if(alarmItem != null){
-            NotificationHelper notificationHelper = new NotificationHelper(context);
+
+            NotificationHelper notificationHelper = new NotificationHelper(context, alarmItem.alarmSoundName);
 
             NotificationCompat.Builder builder = notificationHelper.getChannelNotification(
                 getEventViewIntent(alarmItem.eventId),
@@ -38,7 +40,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 R.drawable.ic_launcher,
                 alarmItem.alarmSoundName
             );
-
             notificationHelper.getManager().notify(alarmItem.eventId, builder.build());
         }
     }

@@ -196,6 +196,23 @@
 
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/alarmPermissionRequestBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:text="@string/updatePermissions"
+                android:textColor="@color/highLight"
+                android:background="@color/bgModal"
+                android:onClick="updatePermissionsAction"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventAlarmLabel"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
             <Spinner
                 android:id="@+id/eventAlarm"
 
@@ -210,6 +227,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/eventAlarmLabel"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -275,6 +293,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/event_form_detail"
+                android:gravity="top"
                 android:theme="@style/FormInlineLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.portal.calendar.CalendarNotification.NotificationHelper;
 import com.portal.calendar.MonthDay.MonthDayAdapter;
 import com.portal.calendar.Utils.CalendarUtils;
 import com.portal.calendar.Utils.OnSwipeTouchListener;
@@ -30,12 +31,12 @@ public class MainActivity extends AppCompatActivity implements MonthDayAdapter.O
         monthYearText = findViewById(R.id.monthYear);
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         calendarRecyclerView.setOnTouchListener(setupViewSwipeListener());
-
+        //new NotificationHelper(this, null).deleteAllChannels();
         updateUI();
 
     }
     private OnSwipeTouchListener setupViewSwipeListener(){
-        return new OnSwipeTouchListener(this) {
+        return new OnSwipeTouchListener(this, OnSwipeTouchListener.swipeDirection.HORIZONTAL) {
             @Override
             public void onSwipeLeft() {
                 nextMonthAction(calendarRecyclerView);
@@ -72,6 +73,12 @@ public class MainActivity extends AppCompatActivity implements MonthDayAdapter.O
         MonthDayAdapter calendarAdapter = new MonthDayAdapter(daysInMonth, this, this);
 
         //definir o layout a ser aplicado na recicledView
+        /*RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };*/
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
 
         calendarRecyclerView.setLayoutManager(layoutManager);

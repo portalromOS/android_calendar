@@ -56,6 +56,7 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">viewStart</item>
     </style>
 
     <style name="FormInputSpinner"  parent="Widget.AppCompat.DropDownItem.Spinner">
@@ -63,7 +64,7 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:textAlignment">viewStart</item>
         <item name="android:background">@color/bg</item>
     </style>
     <style name="FormInputPicker" parent="FormInput">

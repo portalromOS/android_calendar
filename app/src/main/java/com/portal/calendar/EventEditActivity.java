@@ -2,10 +2,18 @@ package com.portal.calendar;
 
 import static java.lang.Math.abs;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultCaller;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,6 +22,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +39,8 @@ import com.portal.calendar.Utils.CalendarUtils;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class EventEditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, AdapterView.OnItemSelectedListener
@@ -43,14 +54,23 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     private EditText eventName;
     private TextView eventDate;
     private TextView eventTime;
+
+
     private Spinner eventAlarm;
 
+    private Button alarmPermissionRequestBtn;
     private View formDivAlarmSound;
     private Spinner eventAlarmSound;
 
     private ImageButton playSoundIconBtn;
     private TextView eventDetail;
 
+
+
+    private ActivityResultLauncher<String[]> permissionResultLauncher;
+    private boolean hasPermissionNotification = false;
+
+    private boolean inNotificationDebug = false; //para permitir que alertas "passados" sejam disparados de imediato
 
     private CalendarEventSQL sqlHelper;
     CalendarEventModel model = null;
@@ -59,6 +79,8 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
+
+
 
         setupGui();
 
@@ -88,6 +110,17 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
             findViewById(R.id.saveIconBtn).setVisibility(View.GONE);
             updateUI();
         }
+
+        permissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
+            @Override
+            public void onActivityResult(Map<String, Boolean> result) {
+                if(result.get(Manifest.permission.POST_NOTIFICATIONS)!=null){
+                    hasPermissionNotification = result.get(Manifest.permission.POST_NOTIFICATIONS);
+                }
+                updateUI();
+            }
+        });
+        requestPermission();
     }
     private void setupGui(){
 
@@ -106,14 +139,13 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
         eventDate = findViewById(R.id.eventDate);
         eventTime = findViewById(R.id.eventTime);
 
-
+        alarmPermissionRequestBtn = findViewById(R.id.alarmPermissionRequestBtn);
         eventAlarm = findViewById(R.id.eventAlarm);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.eventAlarms, R.layout.custom_spinner_item);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, getAlarmStrings());
         adapter.setDropDownViewResource(R.layout.custom_spinner_item);
         eventAlarm.setAdapter(adapter);
         eventAlarm.setOnItemSelectedListener(this);
-
 
         formDivAlarmSound = findViewById(R.id.formDivAlarmSound);
 
@@ -159,28 +191,34 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
         eventAlarm.setSelection(CalendarUtils.getListPositionByValue(alarmValues, model.alarm),true);
         eventDetail.setText(model.detail);
 
-        if(model.alarm == -1)
+        if(hasPermissionNotification){
+            eventAlarm.setVisibility(View.VISIBLE);
+            alarmPermissionRequestBtn.setVisibility(View.GONE);
+            if(model.alarm == -1)
+                formDivAlarmSound.setVisibility(View.GONE);
+            else
+                formDivAlarmSound.setVisibility(View.VISIBLE);
+
+
+            if(model.alarmSoundName == "")
+                playSoundIconBtn.setVisibility(View.GONE);
+            else
+                playSoundIconBtn.setVisibility(View.VISIBLE);
+
+            eventAlarmSound.setSelection(CalendarUtils.getListPositionByValue(alarmSoundValues, model.alarmSoundName),true);
+        }
+        else{
+            eventAlarm.setVisibility(View.GONE);
             formDivAlarmSound.setVisibility(View.GONE);
-        else
-            formDivAlarmSound.setVisibility(View.VISIBLE);
+            alarmPermissionRequestBtn.setVisibility(View.VISIBLE);
+        }
 
 
-        if(model.alarmSoundName == "")
-            playSoundIconBtn.setVisibility(View.GONE);
-        else
-            playSoundIconBtn.setVisibility(View.VISIBLE);
-
-        eventAlarmSound.setSelection(CalendarUtils.getListPositionByValue(alarmSoundValues, model.alarmSoundName),true);
 
 
     }
     private void resetForm(){
-        model.name = "";
-        model.date = CalendarUtils.selectedDate;
-        model.time = LocalTime.of( 8,0);
-        model.alarm = -1;
-        model.alarmSoundName = "";
-        model.detail = "";
+        model.publicReset(CalendarUtils.selectedDate, LocalTime.of( 8,0));
         updateUI();
 
     }
@@ -215,6 +253,10 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
             playSoundIconBtn.setImageResource(R.drawable.baseline_play_circle_outline_24);
         }
     }
+    public void updatePermissionsAction(View view) {
+        requestPermission();
+    }
+
     public void closeEventAction(View view) {
         finish();
     }
@@ -227,9 +269,14 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
                 if(model.alarm >= 0){
                     AlarmItem ai = new AlarmItem((int)model.id, model.name, model.detail, model.alarmSoundName);
                     AlarmScheduler as = new AlarmScheduler(this);
-                    as.schedule(ai, model.getAlarmDateTime());
+                    if(as.validTime(model.getAlarmDateTime()) || inNotificationDebug){
+                        as.schedule(ai, model.getAlarmDateTime());
+                        CalendarUtils.showMsg(this, R.string.event_form_alarmAdded);
+                    }
+                    else{
+                        CalendarUtils.showMsg(this, R.string.event_form_alarmOutdated);
+                    }
 
-                    CalendarUtils.showMsg(this, R.string.event_form_alarmAdded);
                 }
                 finish();
             }
@@ -261,14 +308,15 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
         model.updateDate(year, monthOfYear, dayOfMonth);
+        model.updateDateEnd(year, monthOfYear, dayOfMonth);
         updateUI();
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         model.updateTime(hour,minute);
+        model.updateTimeEnd(hour,minute);
         updateUI();
     }
 
@@ -290,4 +338,17 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
 
     }
 
+
+    private void requestPermission(){
+        hasPermissionNotification = (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED);
+
+        ArrayList<String> permissionRequest = new ArrayList<>();
+        if(!hasPermissionNotification)
+            permissionRequest.add(Manifest.permission.POST_NOTIFICATIONS);
+
+        if(!permissionRequest.isEmpty()){
+            permissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+        }
+
+    }
 }

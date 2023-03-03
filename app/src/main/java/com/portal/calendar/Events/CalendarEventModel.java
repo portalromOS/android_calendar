@@ -26,13 +26,16 @@ public class CalendarEventModel implements Serializable {
     public LocalTime timeEnd;
     public String alarmSoundName;
 
+    public String color;
+
     public CalendarEventModel() {
         reset();
     }
     public CalendarEventModel(String name, LocalDate date, LocalTime time, int alarm, String detail,
-                              boolean allDay, LocalDate dateEnd, LocalTime timeEnd, String alarmSoundName )
+                              boolean allDay, LocalDate dateEnd, LocalTime timeEnd, String alarmSoundName,
+                              String color )
     {
-        this.id = 0;
+        this.id = -1;
         this.name = (name == null)?"":name;
         this.date = date;
         this.time = time;
@@ -43,11 +46,13 @@ public class CalendarEventModel implements Serializable {
         this.dateEnd = dateEnd;
         this.timeEnd = timeEnd;
         this.alarmSoundName = alarmSoundName;
+        this.color = color;
     }
 
     public CalendarEventModel(long id,
                               String name, String datetime, int alarm, String detail,
-                              boolean allDay, LocalDate dateEnd, LocalTime timeEnd, String alarmSoundName )
+                              boolean allDay, LocalDate dateEnd, LocalTime timeEnd, String alarmSoundName,
+                              String color )
     {
         this.id = id;
         this.name = name;
@@ -60,6 +65,7 @@ public class CalendarEventModel implements Serializable {
         this.dateEnd = dateEnd;
         this.timeEnd = timeEnd;
         this.alarmSoundName = alarmSoundName;
+        this.color = color;
     }
 
     public CalendarEventModel(Cursor cursor )
@@ -102,6 +108,10 @@ public class CalendarEventModel implements Serializable {
             this.alarmSoundName = cursor.getString(indexCol);
             this.alarmSoundName = (this.alarmSoundName == "")?null:this.alarmSoundName;
         }
+
+        indexCol = cursor.getColumnIndex(COL_COLOR);
+        if(indexCol >= 0)
+            this.color = cursor.getString(indexCol);
     }
     private void reset(){
         id = -1;
@@ -114,6 +124,16 @@ public class CalendarEventModel implements Serializable {
         dateEnd = LocalDate.now();
         timeEnd = LocalTime.now();
         alarmSoundName = "";
+        color = "";
+    }
+    public void publicReset(LocalDate date, LocalTime time){
+        long actualId = id;
+        reset();
+        id = actualId;
+        this.date = date;
+        this.dateEnd = date;
+        this.time = time;
+        this.timeEnd = time;
     }
     public boolean hasId(){
         return (this.id > 0);
@@ -128,6 +148,16 @@ public class CalendarEventModel implements Serializable {
     public void updateTime(int hour, int minute) {
          time = LocalTime.of( hour,minute);
     }
+    public void updateDateEnd(int year, int monthOfYear, int dayOfMonth) {
+        dateEnd = dateEnd.withYear(year);
+        dateEnd = dateEnd.withMonth(monthOfYear);
+        dateEnd = dateEnd.withDayOfMonth(dayOfMonth);
+    }
+
+    public void updateTimeEnd(int hour, int minute) {
+        timeEnd = LocalTime.of( hour,minute);
+    }
+
     public boolean isValid() {
         boolean result = true;
         if(date == null)
@@ -143,6 +173,7 @@ public class CalendarEventModel implements Serializable {
 
         LocalDateTime dateTime = LocalDateTime.of(date, time);
         dateTime.minusHours(alarm);
+
         return dateTime;
     }
 }

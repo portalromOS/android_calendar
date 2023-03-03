@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,26 +21,27 @@ public class AlarmScheduler implements  AlarmSchedulerInterface{
         this.context = context;
         manager = context.getSystemService(AlarmManager.class);
     }
-
-    @SuppressLint("MissingPermission")
+    public boolean validTime(LocalDateTime dateTime){
+        return dateTime.isAfter(LocalDateTime.now());
+    }
     @Override
     public void schedule(AlarmItem item, LocalDateTime dateTime) {
-        Intent intent = new Intent(context, AlarmReceiver.class);
+            Intent intent = new Intent(context, AlarmReceiver.class);
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ALARM_ITEM_NOTIFICATION, item);
-        intent.putExtras(bundle);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ALARM_ITEM_NOTIFICATION, item);
+            intent.putExtras(bundle);
 
-        manager.setExactAndAllowWhileIdle(
-            manager.RTC_WAKEUP,
-            dateTime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
-            PendingIntent.getBroadcast(
-                context,
-                item.eventId,
-                intent,
-                PendingIntent.FLAG_MUTABLE
-            )
-        );
+            manager.setExactAndAllowWhileIdle(
+                    manager.RTC_WAKEUP,
+                    dateTime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
+                    PendingIntent.getBroadcast(
+                            context,
+                            item.eventId,
+                            intent,
+                            PendingIntent.FLAG_MUTABLE
+                    )
+            );
     }
 
     @Override

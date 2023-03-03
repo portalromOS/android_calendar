@@ -42,7 +42,7 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
     }
 
     private OnSwipeTouchListener setupListViewSwipeListener(){
-        return new OnSwipeTouchListener(this) {
+        return new OnSwipeTouchListener(this, OnSwipeTouchListener.swipeDirection.HORIZONTAL) {
             @Override
             public void onSwipeLeft() {
                 nextDayAction(calendarEventListView);
