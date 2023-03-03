@@ -11,8 +11,12 @@
 
     <string name="event_title">Event</string>
     <string name="event_form_name">Name</string>
+
+    <string name="event_form_all_day">All Day</string>
+    <string name="event_form_date_time">Date/Time</string>
     <string name="event_form_date">Date</string>
     <string name="event_form_time">Time</string>
+    <string name="event_form_date_time_end">Until</string>
     <string name="event_form_alarm">Alarm</string>
     <string name="event_form_notification">Notification</string>
     <string name="event_form_sound">Sound</string>
@@ -24,6 +28,11 @@
     <string name="sql_calendarEvents_add">There was an error adding the event</string>
     <string name="sql_calendarEvents_update">There was an error updating the event</string>
     <string name="sql_calendarEvents_remove">There was an error removing the event</string>
+
+    <string name="event_model_invalid_date">Invalid date</string>
+    <string name="event_model_invalid_time">Invalid time</string>
+    <string name="event_model_invalid_end">End of the event before the start</string>
+
 
     <string-array name="months">
         <item>January</item>

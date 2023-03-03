@@ -2,8 +2,10 @@ package com.portal.calendar.Events;
 
 import static com.portal.calendar.Events.CalendarEventSQL.*;
 
+import android.content.Context;
 import android.database.Cursor;
 
+import com.portal.calendar.R;
 import com.portal.calendar.Utils.CalendarUtils;
 
 import java.io.Serializable;
@@ -120,7 +122,7 @@ public class CalendarEventModel implements Serializable {
         time = LocalTime.now();
         detail = "";
         alarm = -1;
-        allDay = false;
+        allDay = true;
         dateEnd = LocalDate.now();
         timeEnd = LocalTime.now();
         alarmSoundName = "";
@@ -158,12 +160,33 @@ public class CalendarEventModel implements Serializable {
         timeEnd = LocalTime.of( hour,minute);
     }
 
-    public boolean isValid() {
+    public boolean isValid(Context context, boolean showMsgs) {
         boolean result = true;
-        if(date == null)
+        if(date == null){
+            if(showMsgs)
+                CalendarUtils.showMsg(context, R.string.event_model_invalid_date);
             result = false;
-        if(time == null)
+        }
+
+        if(time == null){
+            if(showMsgs)
+                CalendarUtils.showMsg(context, R.string.event_model_invalid_time);
             result = false;
+        }
+
+
+        if(!allDay){
+            LocalDateTime start = LocalDateTime.of(date, time);
+            LocalDateTime end = LocalDateTime.of(dateEnd, timeEnd);
+
+            if(start.isAfter(end)){
+                if(showMsgs)
+                    CalendarUtils.showMsg(context, R.string.event_model_invalid_end);
+                result = false;
+            }
+
+        }
+
         return result;
     }
 

@@ -88,13 +88,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivName"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0">
 
             <TextView
                 android:id="@+id/eventNameLabel"
-                android:layout_width="100dp"
+                android:layout_width="125dp"
                 android:layout_height="match_parent"
                 android:text="@string/event_form_name"
                 android:theme="@style/FormInlineLabel"
@@ -119,13 +119,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivDate"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0">
 
             <TextView
                 android:id="@+id/eventDateLabel"
-                android:layout_width="100dp"
+                android:layout_width="125dp"
                 android:layout_height="match_parent"
                 android:text="@string/event_form_date"
                 android:theme="@style/FormInlineLabel"
@@ -142,12 +142,68 @@
 
                 android:onClick="popUpDatePickerAction"
                 android:theme="@style/FormInputPicker"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/eventTime"
                 app:layout_constraintStart_toEndOf="@+id/eventDateLabel" />
+
+            <TextView
+                android:id="@+id/eventTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+
+                android:onClick="popUpTimePickerAction"
+                android:theme="@style/FormInputPicker"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventDate"
+                android:visibility="gone"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/formDivDateEnd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="0"
+            >
+
+            <TextView
+                android:id="@+id/eventDateEndLabel"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:text="@string/event_form_date_time_end"
+                android:theme="@style/FormInlineLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+            <TextView
+                android:id="@+id/eventDateEnd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+
+                android:onClick="popUpDatePickerAction"
+                android:theme="@style/FormInputPicker"
+                app:layout_constraintEnd_toStartOf="@id/eventTimeEnd"
+                app:layout_constraintStart_toEndOf="@+id/eventDateEndLabel" />
+
+            <TextView
+                android:id="@+id/eventTimeEnd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+
+                android:onClick="popUpTimePickerAction"
+                android:theme="@style/FormInputPicker"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventDateEnd" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivTime"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -156,7 +212,7 @@
 
             <TextView
                 android:id="@+id/eventTimeLabel"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:text="@string/event_form_time"
 
@@ -176,20 +232,60 @@
                 android:theme="@style/FormInputPicker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/eventTimeLabel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/formDivAllDay"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="0">
+
+            <TextView
+                android:id="@+id/eventAllDayLabel"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:text="@string/event_form_all_day"
+                android:theme="@style/FormInlineLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/eventAllDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:theme="@style/Switch"
+                android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventDetailLabel"
+                app:layout_constraintTop_toTopOf="parent"
+                app:track="@drawable/switch_track"
+                tools:ignore="TouchTargetSizeCheck"
+
+                android:checked="true"
+                />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivAlarm"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0">
 
             <TextView
                 android:id="@+id/eventAlarmLabel"
-                android:layout_width="100dp"
+                android:layout_width="125dp"
                 android:layout_height="match_parent"
-                android:text="@string/event_form_alarm"
+                android:text="@string/event_form_notification"
 
                 android:theme="@style/FormInlineLabel"
                 app:layout_constraintStart_toStartOf="parent"
@@ -234,14 +330,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivAlarmSound"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0"
             >
 
             <TextView
                 android:id="@+id/eventAlarmSoundLabel"
-                android:layout_width="100dp"
+                android:layout_width="125dp"
                 android:layout_height="match_parent"
                 android:text="@string/event_form_sound"
 
@@ -284,13 +380,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivDetail"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="100dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0">
 
             <TextView
                 android:id="@+id/eventDetailLabel"
-                android:layout_width="100dp"
+                android:layout_width="125dp"
                 android:layout_height="match_parent"
                 android:text="@string/event_form_detail"
                 android:gravity="top"
