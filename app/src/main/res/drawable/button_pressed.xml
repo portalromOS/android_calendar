@@ -8,7 +8,7 @@
             android:color="@color/button" />
         -->
         <gradient
-            android:gradientRadius="150dp"
+            android:gradientRadius="250dp"
             android:endColor="@color/button"
             android:centerColor="@color/button"
             android:startColor="@color/button"

@@ -10,7 +10,7 @@
 
     <item android:state_checked="false">
         <shape android:shape="oval">
-            <solid android:color="@color/textSecundary" />
+            <solid android:color="@color/button" />
             <size android:width="25dp" android:height="25dp" />
         </shape>
     </item>

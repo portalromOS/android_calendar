@@ -3,8 +3,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Status bar color.-->
         <item name="android:windowBackground">@color/bg</item>
-        <item name="android:navigationBarColor">@color/bgModal</item>
-        <item name="android:statusBarColor">@color/bgModal</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:enforceStatusBarContrast">@color/text</item>
         <item name="android:colorPrimary">@color/highLight</item>
         <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialog</item>
         <item name="android:timePickerDialogTheme">@style/CustomTimePickerDialog</item>

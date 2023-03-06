@@ -13,6 +13,7 @@ import com.portal.calendar.Utils.CalendarUtils;
 import com.portal.calendar.R;
 import com.portal.calendar.Utils.RecyclerViewInterface;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class CalendarEventAdapter extends  RecyclerView.Adapter<CalendarEventAdapter.DayEventViewHolder> {
@@ -41,8 +42,35 @@ public class CalendarEventAdapter extends  RecyclerView.Adapter<CalendarEventAda
     public void onBindViewHolder(@NonNull DayEventViewHolder holder, int position) {
         //assign values to viewholder based on the position of the recyclerView
         CalendarEventModel model = calendarEvents.get(position);
+        if(model.allDay){
+            holder.tvTime.setText(R.string.today);
+        }
+        else{
+            String textAux = "";
+            if(!model.date.isEqual( model.dateEnd)){
+                if(model.date.isBefore(CalendarUtils.selectedDate)){
+                    textAux = context.getResources().getString(R.string.dayView_pastStart);
+                }
+                else{
+                    textAux = CalendarUtils.formTime(model.time);
+                }
 
-        holder.tvTime.setText(CalendarUtils.formTime(model.time));
+                textAux += System.lineSeparator();
+
+                if(model.dateEnd.isAfter(CalendarUtils.selectedDate)){
+                    textAux += context.getResources().getString(R.string.dayView_futureEnd);
+                }
+                else{
+                    textAux += CalendarUtils.formTime(model.timeEnd);
+                }
+            }
+            else{
+                textAux = CalendarUtils.formTime(model.time)+ System.lineSeparator() +CalendarUtils.formTime(model.timeEnd);
+            }
+            holder.tvTime.setText(textAux);
+            holder.tvTime.setTextSize(15);
+        }
+
         holder.tvName.setText(model.name);
         holder.tvDetail.setText(model.detail);
     }

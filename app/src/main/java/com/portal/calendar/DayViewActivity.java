@@ -74,7 +74,10 @@ public class DayViewActivity extends AppCompatActivity implements RecyclerViewIn
         TextView day_txt = (TextView)findViewById(R.id.day);
 
         String[] weekDays = getResources().getStringArray(R.array.weekDays);
-        day_txt.setText( weekDays[CalendarUtils.selectedDate.getDayOfWeek().getValue() - 1] + " " + CalendarUtils.selectedDate.getDayOfMonth());
+
+        if(CalendarUtils.selectedDate != null){
+            day_txt.setText( weekDays[CalendarUtils.selectedDate.getDayOfWeek().getValue() - 1] + " " + CalendarUtils.selectedDate.getDayOfMonth());
+        }
     }
 
     private void setMonthViewTxt() {

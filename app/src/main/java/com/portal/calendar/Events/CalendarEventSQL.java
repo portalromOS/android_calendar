@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class CalendarEventSQL extends SQLiteOpenHelper {
     private Context context;
 
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 11;
 
     private static final String TABLE_NAME = "event";
 
@@ -121,7 +121,7 @@ public class CalendarEventSQL extends SQLiteOpenHelper {
                     " FROM " + TABLE_NAME  +
                     " WHERE " +" date(" + COL_DATE_TIME  + ") <= '" + CalendarUtils.toSQLite(date) +"' AND "+
                     " date(" + COL_DATE_TIME_END  + ") >= '" + CalendarUtils.toSQLite(date) + "'" +
-                    " ORDER BY " + COL_ALL_DAY + ", datetime(" + COL_DATE_TIME  + ")";
+                    " ORDER BY " + COL_ALL_DAY + " DESC , datetime(" + COL_DATE_TIME  + ")";
 
             Cursor cursor = null;
 

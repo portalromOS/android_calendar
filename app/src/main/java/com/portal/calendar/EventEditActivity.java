@@ -5,6 +5,7 @@ import static java.lang.Math.abs;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -35,7 +36,9 @@ import com.portal.calendar.Alarm.AlarmItem;
 import com.portal.calendar.Alarm.AlarmScheduler;
 import com.portal.calendar.Events.CalendarEventModel;
 import com.portal.calendar.Events.CalendarEventSQL;
+import com.portal.calendar.MonthDay.MonthDayViewHolder;
 import com.portal.calendar.Utils.CalendarUtils;
+import com.portal.calendar.Utils.ColorItemAdapter;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -51,6 +54,9 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     private MediaPlayer mediaPlayer;
     private final ArrayList<String> alarmSoundValues = new ArrayList<>(Arrays.asList("", "alarm_clock_beep", "data_scaner", "rooster_crowing_in_the_morning"));
     private final ArrayList<Integer> alarmValues = new ArrayList<>(Arrays.asList(-1, 0, 1, 8, 24));
+
+    private final ArrayList<String> colorValues = new ArrayList<>(Arrays.asList("highLight", "event01", "event02",
+            "event03", "event04", "event05", "event06", "event07", "event08", "event09"));
     private EditText eventName;
     private TextView eventDate;
     private TextView eventTime;
@@ -73,7 +79,7 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
     private ImageButton playSoundIconBtn;
     private TextView eventDetail;
 
-
+    private Spinner eventColor;
 
     private ActivityResultLauncher<String[]> permissionResultLauncher;
     private boolean hasPermissionNotification = false;
@@ -192,6 +198,12 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
                 model.detail = String.valueOf(eventDetail.getText());
             }
         });
+
+        eventColor = findViewById(R.id.eventColor);
+        ColorItemAdapter adapterColor = new ColorItemAdapter(this,  colorValues);
+        eventColor.setAdapter(adapterColor);
+        eventColor.setOnItemSelectedListener(this);
+
     }
     private ArrayList<String> getAlarmStrings() {
         ArrayList<String> alarmNames = new ArrayList<>();
@@ -248,6 +260,7 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
             alarmPermissionRequestBtn.setVisibility(View.VISIBLE);
         }
 
+        eventColor.setSelection(CalendarUtils.getListPositionByValue(colorValues, model.color),true);
 
 
 
@@ -381,9 +394,12 @@ public class EventEditActivity extends AppCompatActivity implements DatePickerDi
         if(parent == eventAlarm){
             model.alarm = alarmValues.get(pos);
         }
-        else{
+        else if(parent == eventAlarmSound){
             model.alarmSoundName = alarmSoundValues.get(pos);
             stopSoundAction(playSoundIconBtn);
+        }
+        else if (parent == eventColor){
+            model.color = colorValues.get(pos);
         }
         updateUI();
     }

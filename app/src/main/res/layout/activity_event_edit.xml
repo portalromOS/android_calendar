@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context=".EventEditActivity">
+    tools:context=".EventEditActivity"
+    android:paddingHorizontal="8dp"
+    >
 
     <!-- Header-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -271,7 +273,35 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/formDivDetail"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="0">
 
+            <TextView
+                android:id="@+id/eventDetailLabel"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:text="@string/event_form_detail"
+                android:gravity="top"
+                android:theme="@style/FormInlineLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/eventDetail"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:gravity="top"
+                android:theme="@style/FormInput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventDetailLabel"
+                android:inputType="text|textMultiLine"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -377,34 +407,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/formDivDetail"
+            android:id="@+id/formDivColor"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            >
 
             <TextView
-                android:id="@+id/eventDetailLabel"
+                android:id="@+id/eventColorLabel"
                 android:layout_width="125dp"
                 android:layout_height="match_parent"
-                android:text="@string/event_form_detail"
-                android:gravity="top"
+                android:text="@string/event_form_color"
+
                 android:theme="@style/FormInlineLabel"
                 app:layout_constraintStart_toStartOf="parent"
+
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/eventDetail"
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/eventColor"
+
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:layout_marginStart="8dp"
-                android:gravity="top"
+                android:spinnerMode="dropdown"
                 android:theme="@style/FormInput"
+
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/eventDetailLabel"
-                android:inputType="text|textMultiLine"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

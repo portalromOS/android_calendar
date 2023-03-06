@@ -42,6 +42,11 @@ public class CalendarUtils {
         String val = r.getString(resId);
         return val;
     }
+    public static int getColorIdByName(Context context, String idString) {
+        Resources r = context.getResources();
+        return r.getIdentifier(idString, "color", context.getPackageName());
+
+    }
 
     public static ArrayList<Integer> daysInMonthArray(LocalDate date) {
         ArrayList<Integer> daysInMonthArray = new ArrayList<>();
@@ -82,12 +87,13 @@ public class CalendarUtils {
     }
 
     public static String monthYearFromDate(Resources res, LocalDate date){
-        String result;
+        String result = "";
+        if(date != null){
+            String[] months = res.getStringArray(R.array.months);
 
-        String[] months = res.getStringArray(R.array.months);
-
-        int monthId = date.getMonthValue();//starts 1
-        result = months[monthId-1]+" "+date.getYear();
+            int monthId = date.getMonthValue();//starts 1
+            result = months[monthId-1]+" "+date.getYear();
+        }
         return result;
     }
     //region datetime formating

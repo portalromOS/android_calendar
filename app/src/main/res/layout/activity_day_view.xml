@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     tools:context=".DayViewActivity"
+    android:paddingHorizontal="8dp"
     >
 
     <!-- Header-->
