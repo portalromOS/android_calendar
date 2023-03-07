@@ -5,11 +5,15 @@
         <item name="android:windowBackground">@color/bg</item>
         <item name="android:navigationBarColor">@color/bg</item>
         <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:enforceStatusBarContrast">@color/text</item>
         <item name="android:colorPrimary">@color/highLight</item>
         <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialog</item>
         <item name="android:timePickerDialogTheme">@style/CustomTimePickerDialog</item>
         <item name="android:spinnerStyle">@style/FormInput</item>
+
+
         <!--Customize your theme here. -->
     </style>
 
