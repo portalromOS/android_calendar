@@ -47,18 +47,14 @@ public class MonthDayViewHolder extends RecyclerView.ViewHolder implements  View
 
         if(day>0) {
             dayOfMonth_txt.setText(day + "");
-
-            LocalDate date = LocalDate.of(CalendarUtils.selectedDate.getYear(), CalendarUtils.selectedDate.getMonth(), day);
             /*
-            if(getHelperSQL(context).hasEventByDay(date)){
-                dayOfMonth_event_notification.setVisibility(View.VISIBLE);
-            }
-            */
+            LocalDate date = LocalDate.of(CalendarUtils.selectedDate.getYear(), CalendarUtils.selectedDate.getMonth(), day);
+
             ArrayList<CalendarEventModel> eventsOfTheDay = getHelperSQL(context).getEventsByDayMonthView(date);
             for (CalendarEventModel model:eventsOfTheDay) {
                 dayOfMonth_events_view.addView(getEventLayoutByTime(context, model, date));
             }
-
+            */
         }
         else {
             dayOfMonth_txt.setText("");
