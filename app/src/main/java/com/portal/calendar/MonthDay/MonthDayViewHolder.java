@@ -3,6 +3,7 @@ package com.portal.calendar.MonthDay;
 import static android.widget.LinearLayout.*;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,6 +42,9 @@ public class MonthDayViewHolder extends RecyclerView.ViewHolder implements  View
     public void setDayOfMonth(Context context, int day){
         this.day = day;
         //dayOfMonth_event_notification.setVisibility(View.GONE);
+
+        Log.i("PORTAL", "setDayOfMonth day "+day);
+
         if(day>0) {
             dayOfMonth_txt.setText(day + "");
 
