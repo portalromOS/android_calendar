@@ -90,8 +90,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivName"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0">
 
             <TextView
@@ -121,8 +121,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivDate"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0">
 
             <TextView
@@ -145,7 +145,8 @@
                 android:onClick="popUpDatePickerAction"
                 android:theme="@style/FormInputPicker"
                 app:layout_constraintEnd_toStartOf="@id/eventTime"
-                app:layout_constraintStart_toEndOf="@+id/eventDateLabel" />
+                app:layout_constraintStart_toEndOf="@+id/eventDateLabel"
+                app:layout_constraintHorizontal_weight="6"/>
 
             <TextView
                 android:id="@+id/eventTime"
@@ -158,14 +159,16 @@
                 android:theme="@style/FormInputPicker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/eventDate"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                app:layout_constraintHorizontal_weight="4"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivDateEnd"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0"
             >
 
@@ -189,7 +192,8 @@
                 android:onClick="popUpDatePickerAction"
                 android:theme="@style/FormInputPicker"
                 app:layout_constraintEnd_toStartOf="@id/eventTimeEnd"
-                app:layout_constraintStart_toEndOf="@+id/eventDateEndLabel" />
+                app:layout_constraintStart_toEndOf="@+id/eventDateEndLabel"
+                app:layout_constraintHorizontal_weight="6"/>
 
             <TextView
                 android:id="@+id/eventTimeEnd"
@@ -201,7 +205,8 @@
                 android:onClick="popUpTimePickerAction"
                 android:theme="@style/FormInputPicker"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/eventDateEnd" />
+                app:layout_constraintStart_toEndOf="@+id/eventDateEnd"
+                app:layout_constraintHorizontal_weight="4"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -238,8 +243,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivAllDay"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0">
 
             <TextView
@@ -255,7 +260,7 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/eventAllDay"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
 
                 android:theme="@style/Switch"
@@ -277,7 +282,7 @@
             android:id="@+id/formDivDetail"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0">
 
             <TextView
@@ -307,8 +312,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivAlarm"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0">
 
             <TextView
@@ -360,8 +365,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivAlarmSound"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0"
             >
 
@@ -389,11 +394,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/playSoundIconBtn"
                 app:layout_constraintStart_toEndOf="@+id/eventAlarmSoundLabel"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <ImageButton
                 android:id="@+id/playSoundIconBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -407,13 +413,11 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/formDivColor"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0"
             >
 

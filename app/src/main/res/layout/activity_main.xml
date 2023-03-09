@@ -118,8 +118,6 @@
             android:theme="@style/TableHeader" />
     </LinearLayout>
 
-
-
     <!-- Days -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
